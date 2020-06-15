@@ -1,6 +1,8 @@
 Project Process
 1. Plan out CLI Gem
 2. Setup project file structure
+3. Setup bin run file
+4. Stub out CLI
 
 
 Create a CLI for user to access advanced statistics based on games from an NBA season.
@@ -14,10 +16,9 @@ Show general statistics about the season:
 
 Give menu of options to pick:
 Pick a category of statistics to look at:
-1. Season Statistics
-    1. Home Court Advantage
-    2. Point Differentials
-    3. Team Records
-2. Team Statistics
-    1. Head-to-Head records
-    2. 
+1. team records
+2. Home Court Advantages
+3. Point Differentials
+4. select a team
+Exit.
+
