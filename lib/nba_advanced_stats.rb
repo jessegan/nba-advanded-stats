@@ -1,6 +1,4 @@
-require "nba_advanced_stats/version"
+require_relative "../config/environment"
 
 module NbaAdvancedStats
-  class Error < StandardError; end
-  # Your code goes here...
 end
