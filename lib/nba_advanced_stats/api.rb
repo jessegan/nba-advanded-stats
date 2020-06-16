@@ -18,11 +18,12 @@ class NbaAdvancedStats::API
             print "\r#{(1.0*i/total_games*100).to_i}% games loaded"
             sleep(0.005)
 
-            home_team = NbaAdvancedStats::Team.find_or_create_by_name("Celtics")
+            home_team = NbaAdvancedStats::Team.find_or_create_by_name(game["home_team"]["name"])
+            away_team = NbaAdvancedStats::Team.find_or_create_by_name(game["visitor_team"]["name"])
 
             # game = NbaAdvancedStats::Game.new(
-            #     home_team: "Celtics",
-            #     away_team: "Hornets",
+            #     home_team: home_team,
+            #     away_team: away_team,
             #     date: "2019-01-30T00:00:00.000Z",
             #     home_score: 126,
             #     away_score: 94
