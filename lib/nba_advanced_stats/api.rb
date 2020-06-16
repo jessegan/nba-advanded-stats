@@ -22,9 +22,10 @@ class NbaAdvancedStats::API
             away_team = NbaAdvancedStats::Team.find_or_create_by_name(game["visitor_team"]["name"])
 
             # game = NbaAdvancedStats::Game.new(
+            #     date: "2019-01-30T00:00:00.000Z",
+            #     season: season,
             #     home_team: home_team,
             #     away_team: away_team,
-            #     date: "2019-01-30T00:00:00.000Z",
             #     home_score: 126,
             #     away_score: 94
             # )
