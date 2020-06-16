@@ -1,15 +1,20 @@
 class NbaAdvancedStats::CLI
 
     def run
-        puts "Welcome to NBA Advanced Stats CLI"
+        self.welcome
         self.select_season
+    end
+
+    def welcome
+        puts "Welcome to NBA Advanced Stats CLI"
+        puts "---------------------------------"
     end
 
     def select_season
         puts "Pick an NBA Season by typing in the starting year (ex. 2018 shows 2018-2019 season):"        
         input  = gets.strip
         if (input.to_i.between?(1980,2018))
-            puts "#{input} season selected."
+            puts "---------------------------------"
             self.load_season(input)
         else
             puts "Invalid year. Try again."
@@ -21,13 +26,15 @@ class NbaAdvancedStats::CLI
     def load_season(year)
         puts "Loading the #{year} - #{year.to_i+1} season..."
         season = NbaAdvancedStats::API.create_season(year) #if !NbaAdvancedStats::Season.exist?(year)
-        puts "Data Loaded."
         puts ""
+        puts "Data Loaded."
+        puts "---------------------------------"
         self.main_menu(season)
     end
 
     def main_menu(season)
         puts <<~DOC
+
             (Type the # to select the option)
             1. Team Records
             2. Home Court Advantages

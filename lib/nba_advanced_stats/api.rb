@@ -2,7 +2,7 @@ class NbaAdvancedStats::API
 
     BASE_URL = "https://www.balldontlie.io/api/v1/"
 
-    def self.create_season(year,page=13,season=nil)
+    def self.create_season(year,page=1,season=nil)
         response = Net::HTTP.get_response(URI.parse(BASE_URL + "games?seasons[]=#{year}&postseason=false&per_page=100&page=#{page}")).body
         season_data = JSON.parse(response)
 
@@ -15,8 +15,10 @@ class NbaAdvancedStats::API
 
         # Iterate through every game
         season_data["data"].each.with_index(count+1) do |game_data,i|
-            print "\r#{(1.0*i/total_games*100).to_i}% games loaded\n"
-            sleep(0.005)
+            # prints progress counter for loading data
+            print "\r#{(1.0*i/total_games*100).to_i}% games loaded"
+            sleep(0.001)
+
 
             home_team = NbaAdvancedStats::Team.find_or_create_by_name(game_data["home_team"]["name"])
             away_team = NbaAdvancedStats::Team.find_or_create_by_name(game_data["visitor_team"]["name"])
@@ -30,7 +32,6 @@ class NbaAdvancedStats::API
                 away_score: game_data["visitor_team_score"]
             )
 
-            puts game 
         end
 
         #Checks if there is another page of data
@@ -38,7 +39,6 @@ class NbaAdvancedStats::API
             # Recursively calls create_season again with next page number
             self.create_season(year,page+1,season)
         end
-
         season
     end
 
