@@ -36,7 +36,7 @@ class NbaAdvancedStats::CLI
         puts <<~DOC
 
             (Type the # to select the option)
-            1. Team Records
+            1. Season Standings
             2. Home Court Advantages
             3. Point Differentitials
             4. Get data about a specific team
@@ -49,7 +49,7 @@ class NbaAdvancedStats::CLI
 
         case input 
         when "1"
-            self.print_team_records(season)
+            self.print_standings(season)
             self.main_menu(season)
         when "2"
             self.print_home_court_advantages(season)
@@ -71,8 +71,13 @@ class NbaAdvancedStats::CLI
         end
     end
     
-    def print_team_records(season)
-        puts "printing team records"
+    def print_standings(season)
+        self.add_line_break
+        season.records.sort {|a,b| b.wins<=>a.wins}.each.with_index(1) do |record,i|
+            puts "#{i.to_s.rjust(2)}. #{record.team.name.ljust(30)}#{record.wins.to_s.rjust(2)} - #{record.losses.to_s.ljust(2)}"
+        end
+
+        self.add_line_break
     end
 
     def print_home_court_advantages(season)
