@@ -18,15 +18,17 @@ class NbaAdvancedStats::API
             print "\r#{(1.0*i/total_games*100).to_i}% games loaded"
             sleep(0.005)
 
-            game = NbaAdvancedStats::Game.new(
-                home_team: "Celtics",
-                away_team: "Hornets",
-                date: "2019-01-30T00:00:00.000Z",
-                home_score: 126,
-                away_score: 94
-            )
+            home_team = NbaAdvancedStats::Team.find_or_create_by_name("Celtics")
 
-            puts "#{game.home_team} #{game.home_score} - #{game.away_score} #{game.away_team}"
+            # game = NbaAdvancedStats::Game.new(
+            #     home_team: "Celtics",
+            #     away_team: "Hornets",
+            #     date: "2019-01-30T00:00:00.000Z",
+            #     home_score: 126,
+            #     away_score: 94
+            # )
+
+            # puts "#{game.home_team} #{game.home_score} - #{game.away_score} #{game.away_team}"
         end
 
         #Checks if there is another page of data
