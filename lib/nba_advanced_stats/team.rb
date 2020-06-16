@@ -23,9 +23,8 @@ class NbaAdvancedStats::Team
 
     def self.find_or_create_by_name(name)
         if team = self.find_by_name(name)
-            puts " team found"
+            team
         else 
-            puts " create team"
             self.new(name:name)
         end
     end

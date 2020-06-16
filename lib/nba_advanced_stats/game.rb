@@ -24,5 +24,9 @@ class NbaAdvancedStats::Game
     def save
         @@all << self
     end
+
+    def to_s
+        puts "#{self.home_team.name} #{self.home_score} - #{self.away_score} #{self.away_team.name}"
+    end
     
 end

@@ -14,23 +14,23 @@ class NbaAdvancedStats::API
         season = NbaAdvancedStats::Season.new(year: year) if !season
 
         # Iterate through every game
-        season_data["data"].each.with_index(count+1) do |game,i|
-            print "\r#{(1.0*i/total_games*100).to_i}% games loaded"
+        season_data["data"].each.with_index(count+1) do |game_data,i|
+            print "\r#{(1.0*i/total_games*100).to_i}% games loaded\n"
             sleep(0.005)
 
-            home_team = NbaAdvancedStats::Team.find_or_create_by_name(game["home_team"]["name"])
-            away_team = NbaAdvancedStats::Team.find_or_create_by_name(game["visitor_team"]["name"])
+            home_team = NbaAdvancedStats::Team.find_or_create_by_name(game_data["home_team"]["name"])
+            away_team = NbaAdvancedStats::Team.find_or_create_by_name(game_data["visitor_team"]["name"])
 
-            # game = NbaAdvancedStats::Game.new(
-            #     date: "2019-01-30T00:00:00.000Z",
-            #     season: season,
-            #     home_team: home_team,
-            #     away_team: away_team,
-            #     home_score: 126,
-            #     away_score: 94
-            # )
+            game = NbaAdvancedStats::Game.new(
+                date: "2019-01-30T00:00:00.000Z",
+                season: season,
+                home_team: home_team,
+                away_team: away_team,
+                home_score: game_data["home_team_score"],
+                away_score: game_data["visitor_team_score"]
+            )
 
-            # puts "#{game.home_team} #{game.home_score} - #{game.away_score} #{game.away_team}"
+            puts game 
         end
 
         #Checks if there is another page of data
