@@ -4,10 +4,10 @@ class NbaAdvancedStats::Team
 
     @@all = []
 
-    def initialize(name::)
+    def initialize(name:)
         @name = name
         @games = []
-        @record = []
+        @records = []
         self.save
     end
 
@@ -32,8 +32,16 @@ class NbaAdvancedStats::Team
     end
 
     # Instance methods
+    def add_game(game)
+        self.games << game
+    end
+
+    def add_record(record)
+        self.records << record
+    end
 
     def save
         @@all << self
     end
+
 end

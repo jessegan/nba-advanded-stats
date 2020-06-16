@@ -5,9 +5,10 @@ class NbaAdvancedStats::Season
     @@all = []
 
     # Hooks
-    def initialize(year:,games:[])
+    def initialize(year:)
         @year = year
-        @games=games
+        @games=[]
+        @records=[]
         self.save
     end
     
@@ -30,23 +31,30 @@ class NbaAdvancedStats::Season
     end
 
     # Instance Methods
-    def add_game(date:,home_team:,away_team:,home_score:,away_score:)
-        game = NbaAdvancedStats::Game.new(
-            date:date,
-            season:self,
-            home_team:home_team,
-            away_team:away_team,
-            home_score:home_score,
-            away_score:away_score
-        )
-        @games << game
-        self.record_game(game)
+    def add_game(game)
+        self.games << game
+        self.record_game(game.results_hash)
     end
 
-    def record_game(game)
-        result = game.results_hash
-        self.find_or_create_record(result["winner"]).add_win
-        self.find_or_create_record(result["loser"]).add_loss
+    def record_game(results)
+        self.find_or_create_record_by_team(results[:winner]).add_win
+        self.find_or_create_record_by_team(results[:loser]).add_loss
+    end
+
+    def add_record(record)
+        self.records << record
+    end
+
+    def find_record_by_team(team)
+        self.records.find {|record| record.team == team}
+    end
+
+    def find_or_create_record_by_team(team)
+        if record = self.find_record_by_team(team)
+            record
+        else
+            NbaAdvancedStats::Record.new(season:self,team:team)
+        end
     end
 
     def save

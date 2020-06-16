@@ -1,18 +1,35 @@
 class NbaAdvancedStats::Game 
 
-    attr_accessor :date,:season,:home_team,:away_team,:home_score,:away_score
+    attr_accessor :date,:home_score,:away_score
+    attr_reader :season,:home_team,:away_team
 
     @@all = []
 
     # Constructors
     def initialize(date:,season:,home_team:,away_team:,home_score:,away_score:)
         @date=date
-        @season=season
-        @home_team=home_team
-        @away_team=away_team
+        self.home_team=home_team
+        self.away_team=away_team
         @home_score=home_score
         @away_score=away_score
+        self.season = season
         self.save
+    end
+
+    # Instance setters
+    def home_team=(team)
+        @home_team = team
+        team.add_game(self)
+    end
+
+    def away_team=(team)
+        @away_team=team
+        team.add_game(self)
+    end
+
+    def season=(season)
+        @season = season
+        season.add_game(self)
     end
 
     # Class getter
@@ -22,10 +39,11 @@ class NbaAdvancedStats::Game
 
     # instance methods
     def results_hash
-        if home_score > away_score
-            {winner: home_team,loser: away_team}
+        
+        if self.home_score > self.away_score
+            {winner: self.home_team,loser: self.away_team}
         else 
-            {winner: away_team,loser: home_team}
+            {winner: self.away_team,loser: self.home_team}
         end
     end
 

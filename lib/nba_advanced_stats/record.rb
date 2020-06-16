@@ -4,18 +4,32 @@ class NbaAdvancedStats::Record
 
     @@all = []
 
+    #constructors
     def initialize(season:,team:)
-        @season = season
-        @team = team
+        self.season = season
+        self.team = team
         @wins=0
         @losses=0
         self.save
     end
+
+    # instance setters
+    def season=(season)
+        @season = season
+        season.add_record(self)
+    end
+
+    def team=(team)
+        @team = team
+        team.add_record(self)
+    end
     
+    # class getter
     def self.all
         @@all
     end
 
+    # instance methods
     def add_win
         self.wins += 1
     end
