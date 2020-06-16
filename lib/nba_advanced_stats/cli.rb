@@ -7,14 +7,14 @@ class NbaAdvancedStats::CLI
 
     def welcome
         puts "Welcome to NBA Advanced Stats CLI"
-        puts "---------------------------------"
+        self.add_line_break
     end
 
     def select_season
         puts "Pick an NBA Season by typing in the starting year (ex. 2018 shows 2018-2019 season):"        
         input  = gets.strip
         if (input.to_i.between?(1980,2018))
-            puts "---------------------------------"
+            self.add_line_break
             self.load_season(input)
         else
             puts "Invalid year. Try again."
@@ -24,11 +24,11 @@ class NbaAdvancedStats::CLI
     end
 
     def load_season(year)
+
         puts "Loading the #{year} - #{year.to_i+1} season..."
-        season = NbaAdvancedStats::API.create_season(year) #if !NbaAdvancedStats::Season.exist?(year)
-        puts ""
-        puts "Data Loaded."
-        puts "---------------------------------"
+        season = NbaAdvancedStats::Season.find_or_create_with_api(year)
+        puts "Data Ready."
+        self.add_line_break
         self.main_menu(season)
     end
 
@@ -61,6 +61,7 @@ class NbaAdvancedStats::CLI
             self.select_team(season)
             self.main_menu(season)
         when "5"
+            self.add_line_break
             self.select_season
         when "exit"
             self.goodbye
@@ -95,6 +96,10 @@ class NbaAdvancedStats::CLI
 
     def print_team_stats(team,season)
         puts "printing team stats"
+    end
+
+    def add_line_break
+        puts "---------------------------------"
     end
 
     def goodbye

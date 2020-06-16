@@ -38,6 +38,8 @@ class NbaAdvancedStats::API
         if season_data["meta"]["next_page"]
             # Recursively calls create_season again with next page number
             self.create_season(year,page+1,season)
+        else
+            puts ""
         end
         season
     end
