@@ -20,13 +20,13 @@ class NbaAdvancedStats::CLI
 
     def load_season(year)
         puts "Loading the #{year} - #{year.to_i+1} season..."
-        # NbaAdvancedStats::API.new.create_season(year) if !NbaAdvancedStats::Season.exist?(year)
+        season = NbaAdvancedStats::API.create_season(year) #if !NbaAdvancedStats::Season.exist?(year)
         puts "Data Loaded."
         puts ""
-        self.main_menu(year)
+        self.main_menu(season)
     end
 
-    def main_menu(year)
+    def main_menu(season)
         puts <<~DOC
             (Type the # to select the option)
             1. Team Records
@@ -35,58 +35,58 @@ class NbaAdvancedStats::CLI
             4. Get data about a specific team
             5. Select a different season
             Type exit to quit.
-            What do you want to know about the #{year} - #{year.to_i+1} season?
+            What do you want to know about the #{season.year} - #{season.year.to_i+1} season?
         DOC
 
         input = gets.strip
 
         case input 
         when "1"
-            self.print_team_records(year)
-            self.main_menu(year)
+            self.print_team_records(season)
+            self.main_menu(season)
         when "2"
-            self.print_home_court_advantages(year)
-            self.main_menu(year)
+            self.print_home_court_advantages(season)
+            self.main_menu(season)
         when "3"
-            self.print_point_differentials(year)
-            self.main_menu(year)
+            self.print_point_differentials(season)
+            self.main_menu(season)
         when "4"
-            self.select_team(year)
-            self.main_menu(year)
+            self.select_team(season)
+            self.main_menu(season)
         when "5"
             self.select_season
         when "exit"
             self.goodbye
         else
             puts "Invalid input. Try Again"
-            self.main_menu(year)
+            self.main_menu(season)
         end
     end
     
-    def print_team_records(year)
+    def print_team_records(season)
         puts "printing team records"
     end
 
-    def print_home_court_advantages(year)
+    def print_home_court_advantages(season)
         puts "printing home court advantages"
     end
 
-    def print_point_differentials(year)
+    def print_point_differentials(season)
         puts "printing point differentials"
     end
 
-    def select_team(year)
+    def select_team(season)
         puts "Type in the name of the team or the city they are based in:"
         input = gets.strip
         if team = false # search for team in Team class
-            self.print_team_stats(team,year)
+            self.print_team_stats(team,season)
         else
             puts "Can't find that team. Try Again."
-            select_team(year)
+            select_team(season)
         end
     end
 
-    def print_team_stats(team,year)
+    def print_team_stats(team,season)
         puts "printing team stats"
     end
 

@@ -3,6 +3,7 @@ Project Process
 2. Setup project file structure
 3. Setup bin run file
 4. Stub out CLI
+5. Retrieve data from API
 
 
 Create a CLI for user to access advanced statistics based on games from an NBA season.

@@ -3,5 +3,8 @@ require 'open-uri'
 require 'json'
 
 require_relative "../lib/nba_advanced_stats/cli"
+require_relative "../lib/nba_advanced_stats/api"
+require_relative "../lib/nba_advanced_stats/season"
+require_relative "../lib/nba_advanced_stats/game"
 
 
