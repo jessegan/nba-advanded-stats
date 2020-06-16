@@ -7,5 +7,6 @@ require_relative "../lib/nba_advanced_stats/api"
 require_relative "../lib/nba_advanced_stats/season"
 require_relative "../lib/nba_advanced_stats/game"
 require_relative "../lib/nba_advanced_stats/team"
+require_relative "../lib/nba_advanced_stats/record"
 
 

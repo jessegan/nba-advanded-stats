@@ -1,12 +1,13 @@
 class NbaAdvancedStats::Season 
 
-    attr_accessor :year
+    attr_accessor :year, :games, :records
 
     @@all = []
 
     # Hooks
-    def initialize(year:)
+    def initialize(year:,games:[])
         @year = year
+        @games=games
         self.save
     end
     
@@ -29,6 +30,25 @@ class NbaAdvancedStats::Season
     end
 
     # Instance Methods
+    def add_game(date:,home_team:,away_team:,home_score:,away_score:)
+        game = NbaAdvancedStats::Game.new(
+            date:date,
+            season:self,
+            home_team:home_team,
+            away_team:away_team,
+            home_score:home_score,
+            away_score:away_score
+        )
+        @games << game
+        self.record_game(game)
+    end
+
+    def record_game(game)
+        result = game.results_hash
+        self.find_or_create_record(result["winner"]).add_win
+        self.find_or_create_record(result["loser"]).add_loss
+    end
+
     def save
         @@all << self
     end

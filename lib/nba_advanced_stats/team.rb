@@ -1,11 +1,13 @@
 class NbaAdvancedStats::Team
 
-    attr_accessor :name
+    attr_accessor :name,:city, :games, :records
 
     @@all = []
 
-    def initialize(name:)
+    def initialize(name::)
         @name = name
+        @games = []
+        @record = []
         self.save
     end
 
@@ -30,6 +32,7 @@ class NbaAdvancedStats::Team
     end
 
     # Instance methods
+
     def save
         @@all << self
     end

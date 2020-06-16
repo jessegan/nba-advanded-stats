@@ -4,6 +4,7 @@ Project Process
 3. Setup bin run file
 4. Stub out CLI
 5. Retrieve data from API
+6. Loaded data into Season + Game objects
 
 
 Create a CLI for user to access advanced statistics based on games from an NBA season.
@@ -17,9 +18,22 @@ Show general statistics about the season:
 
 Give menu of options to pick:
 Pick a category of statistics to look at:
-1. team records
+1. Season Standings
 2. Home Court Advantages
 3. Point Differentials
 4. select a team
+5. Select a different season
 Exit.
+
+
+CLASS STRUCTURES
+
+Season:
+- Should have:
+ - year
+ - games
+- Should be able to:
+ - add a game
+ - show its standings
+ - show various advanced stats from the games
 

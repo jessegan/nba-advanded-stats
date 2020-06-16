@@ -20,10 +20,10 @@ class NbaAdvancedStats::API
             sleep(0.001)
 
 
-            home_team = NbaAdvancedStats::Team.find_or_create_by_name(game_data["home_team"]["name"])
-            away_team = NbaAdvancedStats::Team.find_or_create_by_name(game_data["visitor_team"]["name"])
+            home_team = NbaAdvancedStats::Team.find_or_create_by_name(game_data["home_team"]["full_name"])
+            away_team = NbaAdvancedStats::Team.find_or_create_by_name(game_data["visitor_team"]["full_name"])
 
-            game = NbaAdvancedStats::Game.new(
+            season.add_game(
                 date: "2019-01-30T00:00:00.000Z",
                 season: season,
                 home_team: home_team,

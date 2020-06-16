@@ -21,6 +21,14 @@ class NbaAdvancedStats::Game
     end
 
     # instance methods
+    def results_hash
+        if home_score > away_score
+            {winner: home_team,loser: away_team}
+        else 
+            {winner: away_team,loser: home_team}
+        end
+    end
+
     def save
         @@all << self
     end
