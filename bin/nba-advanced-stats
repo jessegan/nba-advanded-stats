@@ -2,4 +2,11 @@
 
 require_relative "../lib/nba_advanced_stats"
 
-NbaAdvancedStats::CLI.new.run
+binding.pry
+# NbaAdvancedStats::CLI.new.run
+
+
+# season = NbaAdvancedStats::Season.new(year:"2018")
+# team = NbaAdvancedStats::Team.new(name:"Boston Celtics")
+# team2 = NbaAdvancedStats::Team.new(name: "New York Knicks")
+# game = NbaAdvancedStats::Game.new(date:"",season:season,home_team:team,away_team:team2,home_score:100,away_score:101)

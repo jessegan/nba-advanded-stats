@@ -39,7 +39,6 @@ class NbaAdvancedStats::Game
 
     # instance methods
     def results_hash
-        
         if self.home_score > self.away_score
             {winner: self.home_team,loser: self.away_team}
         else 

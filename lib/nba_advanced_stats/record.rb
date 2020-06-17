@@ -6,36 +6,31 @@ class NbaAdvancedStats::Record
     @@all = []
 
     #constructors
-    def initialize()
-        @wins=0
-        @losses=0
+    def initialize(season:nil,team:nil,wins:0,losses:0)
+        @season=season
+        @team=team
+        @wins=wins
+        @losses=losses
         @games=[]
     end
 
-    def self.create_record(season:,team:)
-        record = NbaAdvancedStats::Record.new
+    def self.create_new_record(season:,team:,wins:0,losses:0)
+        record = NbaAdvancedStats::Record.new(wins:wins,losses:losses)
         record.season = season
         record.team = team
         record.save
         record
     end
 
-    def self.create_temp(season:,team:)
-        record = NbaAdvancedStats::Record.new
-        record.season = season,true
-        record.team = team,true
-        record
-    end
-
     # instance setters
-    def season=(season,temp=false)
+    def season=(season)
         @season = season
-        season.add_record(self) if !temp
+        season.add_record(self)
     end
 
-    def team=(team,temp=false)
+    def team=(team)
         @team = team
-        team.add_record(self) if !temp
+        team.add_record(self)
     end
     
     # class getter
@@ -58,19 +53,20 @@ class NbaAdvancedStats::Record
         1.0 * self.wins/(self.wins + self.losses)
     end
 
-    def home_court_percentage()
+    def home_court_record()
         home_wins = 0
-        home_games = 0
+        home_losses = 0
         self.games.each do |game|
             if game.home_team == self.team
-                home_games += 1
-                home_wins+=1 if game.home_score > game.away_score
+                game.home_score > game.away_score ? home_wins+=1 : home_losses+=1
             end
         end 
-        1.0 * home_wins/ home_games
+        NbaAdvancedStats::Record.new(season:self.season,team:self.team,wins:home_wins,losses:home_losses)
     end
 
-
+    def home_win_percentage()
+        self.home_court_record.win_percentage
+    end
 
     def save
         @@all << self

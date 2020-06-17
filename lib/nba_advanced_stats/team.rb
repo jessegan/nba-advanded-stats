@@ -48,14 +48,6 @@ class NbaAdvancedStats::Team
         self.records.find {|record| record.season == season}
     end
 
-    # def get_home_court_advantage(season)
-    #     self.get_games_by_season
-    # end
-
-    # def get_point_differential(season)
-
-    # end
-
     def save
         @@all << self
     end

@@ -4,4 +4,7 @@ source "https://rubygems.org"
 #gemspec
 
 gem "rake", "~> 12.0"
-gem "rspec", "~> 3.0"
+gem "pry"
+gem "json"
+gem "net/http"
+gem "open-uri"

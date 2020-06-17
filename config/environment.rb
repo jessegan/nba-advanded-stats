@@ -1,6 +1,7 @@
 require 'net/http'
 require 'open-uri'
 require 'json'
+require 'pry'
 
 require_relative "../lib/nba_advanced_stats/cli"
 require_relative "../lib/nba_advanced_stats/api"
