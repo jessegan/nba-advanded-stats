@@ -8,10 +8,10 @@ class NbaAdvancedStats::Game
     # Constructors
     def initialize(date:,season:,home_team:,away_team:,home_score:,away_score:)
         @date=date
-        self.home_team=home_team
-        self.away_team=away_team
         @home_score=home_score
         @away_score=away_score
+        self.home_team=home_team
+        self.away_team=away_team
         self.season = season
         self.save
     end
