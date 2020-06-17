@@ -1,6 +1,6 @@
 class NbaAdvancedStats::Record 
 
-    attr_accessor :season, :team, :wins,:losses
+    attr_accessor :season, :team, :wins,:losses,:games
 
     @@all = []
 
@@ -10,6 +10,7 @@ class NbaAdvancedStats::Record
         self.team = team
         @wins=0
         @losses=0
+        @games=[]
         self.save
     end
 
@@ -30,12 +31,14 @@ class NbaAdvancedStats::Record
     end
 
     # instance methods
-    def add_win
+    def add_win(game)
         self.wins += 1
+        self.games << game
     end
 
-    def add_loss
+    def add_loss(game)
         self.losses += 1
+        self.games << game
     end
 
     def save

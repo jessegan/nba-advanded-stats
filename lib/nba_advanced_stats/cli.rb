@@ -81,7 +81,7 @@ class NbaAdvancedStats::CLI
     end
 
     def print_home_court_advantages(season)
-        puts "printing home court advantages"
+        
     end
 
     def print_point_differentials(season)

@@ -30,7 +30,6 @@ class NbaAdvancedStats::API
                 home_score: game_data["home_team_score"],
                 away_score: game_data["visitor_team_score"]
             )
-
         end
 
         #Checks if there is another page of data

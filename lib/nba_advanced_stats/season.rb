@@ -33,12 +33,13 @@ class NbaAdvancedStats::Season
     # Instance Methods
     def add_game(game)
         self.games << game
-        self.record_game(game.results_hash)
+        self.record_game(game)
     end
 
-    def record_game(results)
-        self.find_or_create_record_by_team(results[:winner]).add_win
-        self.find_or_create_record_by_team(results[:loser]).add_loss
+    def record_game(game)
+        results = game.results_hash
+        self.find_or_create_record_by_team(results[:winner]).add_win(game)
+        self.find_or_create_record_by_team(results[:loser]).add_loss(game)
     end
 
     def add_record(record)
@@ -55,6 +56,10 @@ class NbaAdvancedStats::Season
         else
             NbaAdvancedStats::Record.new(season:self,team:team)
         end
+    end
+
+    def teams
+        self.records.map {|record| record.team}
     end
 
     def save
