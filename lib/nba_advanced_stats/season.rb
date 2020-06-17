@@ -58,6 +58,21 @@ class NbaAdvancedStats::Season
         end
     end
 
+    def standings
+        self.records.sort do |a,b| 
+            if a.wins == b.wins
+                hth = a.head_to_head(b.team)
+                hth.wins <=> hth.losses
+            else
+                b.wins <=> a.wins
+            end
+        end
+    end
+
+    def get_standing(team)
+        self.standings.find_index(self.find_record_by_team(team)) 
+    end
+
     def home_court_records
         self.records.map {|record| record.home_court_record}
     end
@@ -74,7 +89,7 @@ class NbaAdvancedStats::Season
 
     def find_a_team(name)
         self.teams.find do |team|
-            team.name.downcase.match(/\b#{name}\b/)
+            team.name.downcase.match(/\b#{name.downcase}\b/)
         end
     end
 

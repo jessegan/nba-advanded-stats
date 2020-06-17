@@ -19,7 +19,7 @@ class NbaAdvancedStats::Team
     #Class Methods
     def self.find_by_name(name)
         @@all.find do |team|
-            team.name == name
+            team.name.downcase.match(/\b#{name.downcase}\b/)
         end
     end
 

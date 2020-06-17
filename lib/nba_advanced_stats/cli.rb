@@ -44,7 +44,9 @@ class NbaAdvancedStats::CLI
             Type exit to quit.
             What do you want to know about the #{season.year} - #{season.year.to_i+1} season?
         DOC
-  
+                
+        #binding.pry
+
         input = gets.strip.downcase
 
         case input 
@@ -74,7 +76,7 @@ class NbaAdvancedStats::CLI
     def print_standings(season)
         self.add_line_break
         puts "Team Standings for the #{season.year} - #{season.year.to_i+1} season"
-        season.records.sort {|a,b| b.wins<=>a.wins}.each.with_index(1) do |record,i|
+        season.standings.each.with_index(1) do |record,i|
             puts "#{i.to_s.rjust(2)}. #{record.team.name.ljust(30)}#{record.wins.to_s.rjust(2)} - #{record.losses.to_s.ljust(2)}"
         end
 
@@ -113,7 +115,10 @@ class NbaAdvancedStats::CLI
     end
 
     def print_team_stats(team,season)
-        puts "printing team stats"
+        self.add_line_break
+        puts "#{season.year} - #{season.year.to_i+1} season stats for the #{team.name}"
+        puts "Standing: #{season.get_standing(team)}"
+        self.add_line_break
     end
 
     def add_line_break

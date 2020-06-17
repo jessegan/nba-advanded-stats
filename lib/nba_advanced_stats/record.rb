@@ -72,6 +72,25 @@ class NbaAdvancedStats::Record
         self.home_win_percentage - self.win_percentage
     end
 
+    def head_to_head(opponent)
+        hth_record = NbaAdvancedStats::Record.new(season:self.season,team:self.team)
+
+        # get list of games
+        self.games.each do |game|
+            # look for games with opponent as home or away team
+            if game.home_team == opponent || game.away_team == opponent
+                # check who wins against record.team
+                if game.winner == self.team
+                    hth_record.add_win(game)
+                else 
+                    hth_record.add_loss(game)
+                end
+            end
+        end
+
+        hth_record
+    end
+
     def save
         @@all << self
     end

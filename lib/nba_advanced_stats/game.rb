@@ -46,6 +46,10 @@ class NbaAdvancedStats::Game
         end
     end
 
+    def winner
+        self.results_hash[:winner]
+    end
+
     def save
         @@all << self
     end

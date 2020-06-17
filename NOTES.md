@@ -26,6 +26,12 @@ Pick a category of statistics to look at:
 Exit.
 
 
+Team stats:
+Boston Celtics 
+1-1 (#1)
+1-1 Home Record with + 0.03% Home Court Advantage
++ 1 Point differential
+
 CLASS STRUCTURES
 
 Season:
