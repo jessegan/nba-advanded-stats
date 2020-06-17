@@ -44,8 +44,8 @@ class NbaAdvancedStats::CLI
             Type exit to quit.
             What do you want to know about the #{season.year} - #{season.year.to_i+1} season?
         DOC
-
-        input = gets.strip
+  
+        input = gets.strip.downcase
 
         case input 
         when "1"
@@ -103,8 +103,8 @@ class NbaAdvancedStats::CLI
 
     def select_team(season)
         puts "Type in the name of the team or the city they are based in:"
-        input = gets.strip
-        if team = false # search for team in Team class
+        input = gets.strip.downcase
+        if team = season.find_a_team(input) # search for team in Team class
             self.print_team_stats(team,season)
         else
             puts "Can't find that team. Try Again."

@@ -68,6 +68,10 @@ class NbaAdvancedStats::Record
         self.home_court_record.win_percentage
     end
 
+    def home_court_advantage
+        self.home_win_percentage - self.win_percentage
+    end
+
     def save
         @@all << self
     end

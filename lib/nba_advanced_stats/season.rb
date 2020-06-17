@@ -64,12 +64,18 @@ class NbaAdvancedStats::Season
 
     def home_court_advantages
         self.records.map do|record|
-            {team:record.team,stat:record.home_win_percentage - record.win_percentage}
+            {team:record.team,stat:record.home_court_advantage}
         end
     end
 
     def teams
         self.records.map {|record| record.team}
+    end
+
+    def find_a_team(name)
+        self.teams.find do |team|
+            team.name.downcase.match(/\b#{name}\b/)
+        end
     end
 
     def save

@@ -40,13 +40,23 @@ class NbaAdvancedStats::Team
         self.records << record
     end
 
-    def get_record(season)
-        self.records.find {|record| record.team == self}
+    def get_record_by_season(season)
+        self.records.find {|record| record.season == season}
+    end
+
+    def get_home_record_by_season(season)
+        self.get_record_by_season(season).home_court_record
+    end
+
+    def get_home_advantage_by_season(season)
+        self.get_record_by_season(season).home_court_advantage
     end
 
     def get_games_by_season(season)
         self.records.find {|record| record.season == season}
     end
+
+
 
     def save
         @@all << self
