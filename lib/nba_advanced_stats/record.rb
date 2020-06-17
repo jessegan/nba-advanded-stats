@@ -49,11 +49,11 @@ class NbaAdvancedStats::Record
         self.games << game
     end
 
-    def win_percentage()
+    def win_percentage
         1.0 * self.wins/(self.wins + self.losses)
     end
 
-    def home_court_record()
+    def home_court_record
         home_wins = 0
         home_losses = 0
         self.games.each do |game|
@@ -64,7 +64,7 @@ class NbaAdvancedStats::Record
         NbaAdvancedStats::Record.new(season:self.season,team:self.team,wins:home_wins,losses:home_losses)
     end
 
-    def home_win_percentage()
+    def home_win_percentage
         self.home_court_record.win_percentage
     end
 

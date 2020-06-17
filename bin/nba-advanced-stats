@@ -2,9 +2,10 @@
 
 require_relative "../lib/nba_advanced_stats"
 
-binding.pry
-# NbaAdvancedStats::CLI.new.run
 
+NbaAdvancedStats::CLI.new.run
+
+#binding.pry
 
 # season = NbaAdvancedStats::Season.new(year:"2018")
 # team = NbaAdvancedStats::Team.new(name:"Boston Celtics")

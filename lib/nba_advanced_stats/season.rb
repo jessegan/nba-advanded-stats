@@ -58,6 +58,10 @@ class NbaAdvancedStats::Season
         end
     end
 
+    def home_court_records
+        self.records.map {|record| record.home_court_record}
+    end
+
     def teams
         self.records.map {|record| record.team}
     end

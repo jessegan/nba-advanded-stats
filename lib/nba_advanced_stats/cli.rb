@@ -37,8 +37,8 @@ class NbaAdvancedStats::CLI
 
             (Type the # to select the option)
             1. Season Standings
-            2. Home Court Advantages
-            3. Point Differentitials
+            2. Home Court Records
+            3. Home Court Advantage (Difference in win percentages between home games and all games)
             4. Get data about a specific team
             5. Select a different season
             Type exit to quit.
@@ -52,10 +52,10 @@ class NbaAdvancedStats::CLI
             self.print_standings(season)
             self.main_menu(season)
         when "2"
-            self.print_home_court_advantages(season)
+            self.print_home_court_records(season)
             self.main_menu(season)
         when "3"
-            self.print_point_differentials(season)
+            self.print_home_court_advantage(season)
             self.main_menu(season)
         when "4"
             self.select_team(season)
@@ -80,11 +80,16 @@ class NbaAdvancedStats::CLI
         self.add_line_break
     end
 
-    def print_home_court_advantages(season)
-        
+    def print_home_court_records(season)
+        self.add_line_break
+        season.home_court_records.sort {|a,b| b.wins<=>a.wins}.each.with_index(1) do |record,i|
+            puts "#{i.to_s.rjust(2)}. #{record.team.name.ljust(30)}#{record.wins.to_s.rjust(2)} - #{record.losses.to_s.ljust(2)}"
+        end
+
+        self.add_line_break
     end
 
-    def print_point_differentials(season)
+    def print_home_court_advantage(season)
         puts "printing point differentials"
     end
 
