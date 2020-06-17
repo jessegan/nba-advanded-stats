@@ -62,6 +62,12 @@ class NbaAdvancedStats::Season
         self.records.map {|record| record.home_court_record}
     end
 
+    def home_court_advantages
+        self.records.map do|record|
+            {team:record.team,stat:record.home_win_percentage - record.win_percentage}
+        end
+    end
+
     def teams
         self.records.map {|record| record.team}
     end
