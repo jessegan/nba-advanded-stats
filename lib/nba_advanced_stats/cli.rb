@@ -78,7 +78,7 @@ class NbaAdvancedStats::CLI
             self.add_line_break
             self.select_season
         when "exit"
-            self.goodbye
+            self.exit
         else
             puts "Invalid input. Try Again"
             self.main_menu(season)
@@ -205,7 +205,7 @@ class NbaAdvancedStats::CLI
         puts "---------------------------------"
     end
 
-    def goodbye
+    def exit
         self.add_line_break
         puts "Thanks for using NBA Advanced Stats CLI!"
     end
