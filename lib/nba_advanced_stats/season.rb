@@ -77,7 +77,9 @@ class NbaAdvancedStats::Season
         self.records.map {|record| record.home_court_record}
     end
 
-    
+    def home_court_records_standings
+        self.home_court_records.sort {|a,b| b.wins<=>a.wins}
+    end    
 
     def home_court_advantages
         self.records.map do|record|

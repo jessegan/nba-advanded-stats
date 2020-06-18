@@ -62,10 +62,12 @@ class NbaAdvancedStats::CLI
             self.main_menu(season)
         when "4"
             self.add_line_break
+            self.print_teams_list(season)
             self.print_team_stats(self.select_team(season),season)
             self.main_menu(season)
         when "5"
             self.add_line_break
+            self.print_teams_list(season)
             self.select_head_to_head(season)
             self.main_menu(season)
         when "6"
@@ -109,6 +111,11 @@ class NbaAdvancedStats::CLI
         self.add_line_break
     end
 
+    def print_teams_list(season)
+        season.teams.sort {|a,b| a.name<=>b.name}.each {|team| puts team.name}
+        self.add_line_break
+    end
+
     def select_team(season)
         puts "Type in the name of the team or the city they are based in:"
         input = gets.strip.downcase
@@ -142,7 +149,13 @@ class NbaAdvancedStats::CLI
 
     def print_head_to_head(team1,team2,season)
         self.add_line_break
+        # print team names
         puts "#{team1.name} vs #{team2.name}"
+
+        # print standings
+        puts "Standings: ##{season.get_standing(team1)} vs ##{season.get_standing(team2)}"
+
+        # print head-to-head stats
         record = season.get_head_to_head_record(team1,team2)
         point_dif = record.average_point_differential
         if record.games.length == 0
@@ -151,6 +164,7 @@ class NbaAdvancedStats::CLI
             puts "Record: #{record.wins.to_s.rjust(2)} - #{record.losses.to_s.ljust(2)}"
             puts "Point Differential: #{point_dif > 0 ? "+" : ""}#{"%0.2f" % [point_dif]}"
         end
+
         self.add_line_break
     end
 
