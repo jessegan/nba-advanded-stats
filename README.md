@@ -1,11 +1,13 @@
 # NBA Advanced Stats
 
-Find out advanced statistics about NBA teams and their performance during any NBA season in the past decade.
+Find out advanced statistics about NBA teams and their performance during any NBA season from 1980 to 2019.
 
 Example Statistics:
-- Team home court advantage
-- Head-to-head records
-- Record versus top teams
+- Overall Standings
+- Home court records (ranked)
+- Home court advantages (ranked) 
+- Average point differential (ranked)
+- Head-to-head records and statistics
 
 ## Installation
 
@@ -25,7 +27,9 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+First, select any NBA season by year and then the app will load all the games from that season.
+Next, choose from a list of option about that season.
+At any point, you can choose a different season from the main menu or exit the app.
 
 ## Development
 
@@ -35,7 +39,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/nba_advanced_stats. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/nba_advanced_stats/blob/master/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/jessegan/nba_advanced_stats. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/jessegan/nba_advanced_stats/blob/master/CODE_OF_CONDUCT.md).
 
 
 ## License
@@ -44,4 +48,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the NbaAdvancedStats project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/nba_advanced_stats/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the NbaAdvancedStats project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/jessegan/nba_advanced_stats/blob/master/CODE_OF_CONDUCT.md).
