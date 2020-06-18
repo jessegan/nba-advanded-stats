@@ -94,7 +94,7 @@ class NbaAdvancedStats::CLI
     def print_home_court_records(season)
         self.add_line_break
         puts "Home Court Records for the #{season.year}-#{season.year.to_i+1} season"
-        season.home_court_records.sort {|a,b| b.wins<=>a.wins}.each.with_index(1) do |record,i|
+        season.home_court_records_standings.each.with_index(1) do |record,i|
             puts "#{i.to_s.rjust(2)}. #{record.team.name.ljust(30)}#{record.wins.to_s.rjust(2)} - #{record.losses.to_s.ljust(2)}"
         end
 
@@ -104,7 +104,7 @@ class NbaAdvancedStats::CLI
     def print_home_court_advantage(season)
         self.add_line_break
         puts "Home Court Advantages for the #{season.year}-#{season.year.to_i+1} season"
-        season.home_court_advantages.sort {|a,b| b[:stat]<=>a[:stat]}.each.with_index(1) do |record,i|
+        season.home_court_advantages_standings.each.with_index(1) do |record,i|
             puts "#{i.to_s.rjust(2)}. #{record[:team].name.ljust(30)}"+ "#{record[:stat] > 0 ? "+" : ""}" +"#{"%0.2f" % [record[:stat]*100]}%"
         end
 

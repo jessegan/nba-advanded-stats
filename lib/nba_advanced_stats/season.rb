@@ -87,6 +87,10 @@ class NbaAdvancedStats::Season
         end
     end
 
+    def home_court_advantages_standings
+        self.home_court_advantages.sort {|a,b| b[:stat]<=>a[:stat]}
+    end
+
     def get_head_to_head_record(team1,team2)
         self.find_record_by_team(team1).head_to_head(team2)
     end
