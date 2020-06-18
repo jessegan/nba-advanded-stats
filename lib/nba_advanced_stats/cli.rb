@@ -39,9 +39,10 @@ class NbaAdvancedStats::CLI
             1. Season Standings
             2. Home Court Records
             3. Home Court Advantage (Difference in win percentages between home games and all games)
-            4. Get data about a specific team
-            5. Get head-to-head matchup details
-            6. Select a different season
+            4. Average Point Differential
+            5. Get data about a specific team
+            6. Get head-to-head matchup details
+            7. Select a different season
             Type exit to quit.
             What do you want to know about the #{season.year}-#{season.year.to_i+1} season?
         DOC
@@ -61,16 +62,19 @@ class NbaAdvancedStats::CLI
             self.print_home_court_advantage(season)
             self.main_menu(season)
         when "4"
-            self.add_line_break
-            self.print_teams_list(season)
-            self.print_team_stats(self.select_team(season),season)
+            self.print_point_differentials(season)
             self.main_menu(season)
         when "5"
             self.add_line_break
             self.print_teams_list(season)
-            self.select_head_to_head(season)
+            self.print_team_stats(self.select_team(season),season)
             self.main_menu(season)
         when "6"
+            self.add_line_break
+            self.print_teams_list(season)
+            self.select_head_to_head(season)
+            self.main_menu(season)
+        when "7"
             self.add_line_break
             self.select_season
         when "exit"
@@ -111,6 +115,14 @@ class NbaAdvancedStats::CLI
         self.add_line_break
     end
 
+    def print_point_differentials(season)
+        self.add_line_break
+        puts "Average Point Differentials for the #{season.year}-#{season.year.to_i+1} season"
+        season.point_differentials_standings.each.with_index(1) do |record,i|
+            puts "#{i.to_s.rjust(2)}. #{record[:team].name.ljust(30)}"+ "#{record[:stat] > 0 ? "+" : ""}" +"#{"%0.2f" % [record[:stat]]}"
+        end
+    end
+
     def print_teams_list(season)
         season.teams.sort {|a,b| a.name<=>b.name}.each {|team| puts team.name}
         self.add_line_break
@@ -130,12 +142,18 @@ class NbaAdvancedStats::CLI
     def print_team_stats(team,season)
         self.add_line_break
         puts "#{team.name} #{season.year}-#{season.year.to_i+1} season stats"
-        puts "#{"Standing:".rjust(15)} #{season.get_standing(team)}"
+        # Standing
+        puts "#{"Standing:".rjust(20)} ##{season.get_standing(team)}"
+        # Record
         record = team.get_record_by_season(season)
-        puts "#{"Record:".rjust(15)} #{record.wins.to_s.rjust(2)} - #{record.losses.to_s.ljust(2)}"
+        puts "#{"Record:".rjust(20)} #{record.wins.to_s.rjust(2)} - #{record.losses.to_s.ljust(2)}"
+        # Home Court
         home_court = record.home_court_record
         home_court_advantage = record.home_court_advantage
-        puts "#{"Home Court:".rjust(15)} #{home_court.wins.to_s.rjust(2)} - #{home_court.losses.to_s.ljust(2)} with a #{home_court_advantage > 0 ? "+" : ""}" +"#{"%0.2f" % [home_court_advantage*100]}% advantage"
+        puts "#{"Home Court:".rjust(20)} #{home_court.wins.to_s.rjust(2)} - #{home_court.losses.to_s.ljust(2)} with a #{home_court_advantage > 0 ? "+" : ""}" +"#{"%0.2f" % [home_court_advantage*100]}% advantage"
+        # Point Differential
+        point_dif = record.average_point_differential
+        puts "#{"Point Differential:".rjust(20)} #{point_dif > 0 ? "+" : ""}#{"%0.2f" % [point_dif]}"
         self.add_line_break
     end
 
@@ -172,6 +190,10 @@ class NbaAdvancedStats::CLI
         end
 
         self.add_line_break
+    end
+
+    def print_games(record)
+        
     end
 
     def add_line_break

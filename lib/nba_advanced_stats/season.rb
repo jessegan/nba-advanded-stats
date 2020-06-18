@@ -91,6 +91,16 @@ class NbaAdvancedStats::Season
         self.home_court_advantages.sort {|a,b| b[:stat]<=>a[:stat]}
     end
 
+    def point_differentials
+        self.records.map do |record|
+            {team:record.team,stat:record.average_point_differential}
+        end
+    end
+
+    def point_differentials_standings
+        self.point_differentials.sort {|a,b| b[:stat]<=>a[:stat]}
+    end
+
     def get_head_to_head_record(team1,team2)
         self.find_record_by_team(team1).head_to_head(team2)
     end
