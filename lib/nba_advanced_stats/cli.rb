@@ -187,13 +187,18 @@ class NbaAdvancedStats::CLI
         else
             puts "Record: #{record.wins.to_s.rjust(2)} - #{record.losses.to_s.ljust(2)}"
             puts "Point Differential: #{point_dif > 0 ? "+" : ""}#{"%0.2f" % [point_dif]}"
+            puts ""
+            puts "Games Played:"
+            self.print_games(record)
         end
 
         self.add_line_break
     end
 
     def print_games(record)
-        
+        record.games.sort {|a,b| a.date<=>b.date}.each do |game|
+            puts ""+game
+        end
     end
 
     def add_line_break

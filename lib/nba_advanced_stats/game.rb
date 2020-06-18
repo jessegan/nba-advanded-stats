@@ -58,8 +58,8 @@ class NbaAdvancedStats::Game
         @@all << self
     end
 
-    def to_s
-        puts "#{self.home_team.name} #{self.home_score} - #{self.away_score} #{self.away_team.name}"
+    def to_str
+        self.date + "\n" + "#{self.home_team.name} #{self.home_score} - #{self.away_score} #{self.away_team.name}"
     end
     
 end
