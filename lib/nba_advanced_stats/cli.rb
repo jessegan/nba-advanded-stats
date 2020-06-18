@@ -25,7 +25,7 @@ class NbaAdvancedStats::CLI
 
     def load_season(year)
 
-        puts "Loading the #{year} - #{year.to_i+1} season..."
+        puts "Loading the #{year}-#{year.to_i+1} season..."
         season = NbaAdvancedStats::Season.find_or_create_with_api(year)
         puts "Data Ready."
         self.add_line_break
@@ -40,9 +40,10 @@ class NbaAdvancedStats::CLI
             2. Home Court Records
             3. Home Court Advantage (Difference in win percentages between home games and all games)
             4. Get data about a specific team
-            5. Select a different season
+            5. Get head-to-head matchup details
+            6. Select a different season
             Type exit to quit.
-            What do you want to know about the #{season.year} - #{season.year.to_i+1} season?
+            What do you want to know about the #{season.year}-#{season.year.to_i+1} season?
         DOC
                 
         #binding.pry
@@ -60,9 +61,14 @@ class NbaAdvancedStats::CLI
             self.print_home_court_advantage(season)
             self.main_menu(season)
         when "4"
-            self.select_team(season)
+            self.add_line_break
+            self.print_team_stats(self.select_team(season),season)
             self.main_menu(season)
         when "5"
+            self.add_line_break
+            self.select_head_to_head(season)
+            self.main_menu(season)
+        when "6"
             self.add_line_break
             self.select_season
         when "exit"
@@ -75,7 +81,7 @@ class NbaAdvancedStats::CLI
     
     def print_standings(season)
         self.add_line_break
-        puts "Team Standings for the #{season.year} - #{season.year.to_i+1} season"
+        puts "Team Standings for the #{season.year}-#{season.year.to_i+1} season"
         season.standings.each.with_index(1) do |record,i|
             puts "#{i.to_s.rjust(2)}. #{record.team.name.ljust(30)}#{record.wins.to_s.rjust(2)} - #{record.losses.to_s.ljust(2)}"
         end
@@ -85,7 +91,7 @@ class NbaAdvancedStats::CLI
 
     def print_home_court_records(season)
         self.add_line_break
-        puts "Home Court Records for the #{season.year} - #{season.year.to_i+1} season"
+        puts "Home Court Records for the #{season.year}-#{season.year.to_i+1} season"
         season.home_court_records.sort {|a,b| b.wins<=>a.wins}.each.with_index(1) do |record,i|
             puts "#{i.to_s.rjust(2)}. #{record.team.name.ljust(30)}#{record.wins.to_s.rjust(2)} - #{record.losses.to_s.ljust(2)}"
         end
@@ -95,7 +101,7 @@ class NbaAdvancedStats::CLI
 
     def print_home_court_advantage(season)
         self.add_line_break
-        puts "Home Court Advantages for the #{season.year} - #{season.year.to_i+1} season"
+        puts "Home Court Advantages for the #{season.year}-#{season.year.to_i+1} season"
         season.home_court_advantages.sort {|a,b| b[:stat]<=>a[:stat]}.each.with_index(1) do |record,i|
             puts "#{i.to_s.rjust(2)}. #{record[:team].name.ljust(30)}"+ "#{record[:stat] > 0 ? "+" : ""}" +"#{"%0.2f" % [record[:stat]*100]}%"
         end
@@ -107,7 +113,7 @@ class NbaAdvancedStats::CLI
         puts "Type in the name of the team or the city they are based in:"
         input = gets.strip.downcase
         if team = season.find_a_team(input) # search for team in Team class
-            self.print_team_stats(team,season)
+            team
         else
             puts "Can't find that team. Try Again."
             select_team(season)
@@ -116,8 +122,33 @@ class NbaAdvancedStats::CLI
 
     def print_team_stats(team,season)
         self.add_line_break
-        puts "#{season.year} - #{season.year.to_i+1} season stats for the #{team.name}"
-        puts "Standing: #{season.get_standing(team)}"
+        puts "#{team.name} #{season.year}-#{season.year.to_i+1} season stats"
+        puts "#{"Standing:".rjust(15)} #{season.get_standing(team)}"
+        record = team.get_record_by_season(season)
+        puts "#{"Record:".rjust(15)} #{record.wins.to_s.rjust(2)} - #{record.losses.to_s.ljust(2)}"
+        home_court = record.home_court_record
+        home_court_advantage = record.home_court_advantage
+        puts "#{"Home Court:".rjust(15)} #{home_court.wins.to_s.rjust(2)} - #{home_court.losses.to_s.ljust(2)} with a #{home_court_advantage > 0 ? "+" : ""}" +"#{"%0.2f" % [home_court_advantage*100]}% advantage"
+        self.add_line_break
+    end
+
+    def select_head_to_head(season)
+        puts "Select the first team:"
+        team1 = self.select_team(season)
+        puts "Select the second team:"
+        team2 = self.select_team(season)
+        self.print_head_to_head(team1,team2,season)
+    end
+
+    def print_head_to_head(team1,team2,season)
+        self.add_line_break
+        puts "#{team1.name} vs #{team2.name}"
+        record = season.get_head_to_head_record(team1,team2)
+        if record.games.length == 0
+            puts "No games played against each other this season."
+        else
+            puts "e#{record.wins.to_s.rjust(2)} - #{record.losses.to_s.ljust(2)}"
+        end
         self.add_line_break
     end
 

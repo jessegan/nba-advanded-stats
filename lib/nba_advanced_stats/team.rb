@@ -56,8 +56,6 @@ class NbaAdvancedStats::Team
         self.records.find {|record| record.season == season}
     end
 
-
-
     def save
         @@all << self
     end

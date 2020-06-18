@@ -70,7 +70,7 @@ class NbaAdvancedStats::Season
     end
 
     def get_standing(team)
-        self.standings.find_index(self.find_record_by_team(team)) 
+        self.standings.find_index(self.find_record_by_team(team)) + 1
     end
 
     def home_court_records
@@ -81,6 +81,10 @@ class NbaAdvancedStats::Season
         self.records.map do|record|
             {team:record.team,stat:record.home_court_advantage}
         end
+    end
+
+    def get_head_to_head_record(team1,team2)
+        self.find_record_by_team(team1).head_to_head(team2)
     end
 
     def teams

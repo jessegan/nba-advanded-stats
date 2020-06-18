@@ -16,7 +16,7 @@ class NbaAdvancedStats::API
         # Iterate through every game
         season_data["data"].each.with_index(count+1) do |game_data,i|
             # prints progress counter for loading data
-            print "\r#{(1.0*i/total_games*100).to_i}% games loaded"
+            print "\r#{(1.0*i/total_games*100).to_i}% of games loaded"
             sleep(0.001)
 
             home_team = NbaAdvancedStats::Team.find_or_create_by_name(game_data["home_team"]["full_name"])
