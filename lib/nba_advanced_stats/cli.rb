@@ -144,10 +144,12 @@ class NbaAdvancedStats::CLI
         self.add_line_break
         puts "#{team1.name} vs #{team2.name}"
         record = season.get_head_to_head_record(team1,team2)
+        point_dif = record.average_point_differential
         if record.games.length == 0
             puts "No games played against each other this season."
         else
-            puts "e#{record.wins.to_s.rjust(2)} - #{record.losses.to_s.ljust(2)}"
+            puts "Record: #{record.wins.to_s.rjust(2)} - #{record.losses.to_s.ljust(2)}"
+            puts "Point Differential: #{point_dif > 0 ? "+" : ""}#{"%0.2f" % [point_dif]}"
         end
         self.add_line_break
     end

@@ -50,6 +50,10 @@ class NbaAdvancedStats::Game
         self.results_hash[:winner]
     end
 
+    def point_differential
+        self.home_score-self.away_score
+    end
+
     def save
         @@all << self
     end

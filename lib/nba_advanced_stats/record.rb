@@ -91,6 +91,22 @@ class NbaAdvancedStats::Record
         hth_record
     end
 
+    def average_point_differential
+        # go through each game
+        
+        total_dif = self.games.inject(0) do |dif,game|
+            # find out if team is home or away
+            if game.home_team == self.team
+                dif + game.point_differential
+            else
+                dif - game.point_differential
+            end
+
+        end
+         # divide by # games then return
+        1.0* total_dif / self.games.length
+    end
+
     def save
         @@all << self
     end
