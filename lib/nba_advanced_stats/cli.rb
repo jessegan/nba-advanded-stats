@@ -142,8 +142,14 @@ class NbaAdvancedStats::CLI
     def select_head_to_head(season)
         puts "Select the first team:"
         team1 = self.select_team(season)
+        self.add_line_break
         puts "Select the second team:"
+        # check if teams are the same
         team2 = self.select_team(season)
+        while team1 == team2
+            puts "You picked the same team. Try again."
+            team2=self.select_team(season)
+        end
         self.print_head_to_head(team1,team2,season)
     end
 
