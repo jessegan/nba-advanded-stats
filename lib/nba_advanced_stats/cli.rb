@@ -206,6 +206,7 @@ class NbaAdvancedStats::CLI
     end
 
     def goodbye
-        puts "Goodbye."
+        self.add_line_break
+        puts "Thanks for using NBA Advanced Stats CLI!"
     end
 end
