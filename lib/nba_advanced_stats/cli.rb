@@ -1,14 +1,13 @@
 class NbaAdvancedStats::CLI
 
+    # START CLI
+
     def run
         self.welcome
         self.select_season
     end
 
-    def welcome
-        puts "Welcome to NBA Advanced Stats CLI"
-        self.add_line_break
-    end
+    # USER INPUT METHODS
 
     def select_season
         puts "Pick an NBA Season by typing in the starting year (ex. 2018 shows 2018-2019 season):"        
@@ -23,18 +22,9 @@ class NbaAdvancedStats::CLI
         end
     end
 
-    def load_season(year)
-
-        puts "Loading the #{year}-#{year.to_i+1} season..."
-        season = NbaAdvancedStats::Season.find_or_create_with_api(year)
-        puts "Data Ready."
-        self.add_line_break
-        self.main_menu(season)
-    end
-
     def main_menu(season)
         puts <<~DOC
-        
+
             (Type the # to select the option)
             1. Season Standings
             2. Home Court Records
@@ -46,8 +36,6 @@ class NbaAdvancedStats::CLI
             Type exit to quit.
             What do you want to know about the #{season.year}-#{season.year.to_i+1} season?
         DOC
-                
-        #binding.pry
 
         input = gets.strip.downcase
 
@@ -84,7 +72,30 @@ class NbaAdvancedStats::CLI
             self.main_menu(season)
         end
     end
-    
+
+    def select_team(season)
+        puts "Type in the name of the team or the city they are based in:"
+        input = gets.strip.downcase
+        if team = season.find_a_team(input) # search for team in Team class
+            team
+        else
+            puts "Can't find that team. Try Again."
+            select_team(season)
+        end
+    end
+
+    # API CALL
+    def load_season(year)
+
+        puts "Loading the #{year}-#{year.to_i+1} season..."
+        season = NbaAdvancedStats::Season.find_or_create_with_api(year)
+        puts "Data Ready."
+        self.add_line_break
+        self.main_menu(season)
+    end
+
+    # PRINTING STATISTICS
+
     def print_standings(season)
         self.add_line_break
         puts "Team Standings for the #{season.year}-#{season.year.to_i+1} season"
@@ -126,17 +137,6 @@ class NbaAdvancedStats::CLI
     def print_teams_list(season)
         season.teams.sort {|a,b| a.name<=>b.name}.each {|team| puts team.name}
         self.add_line_break
-    end
-
-    def select_team(season)
-        puts "Type in the name of the team or the city they are based in:"
-        input = gets.strip.downcase
-        if team = season.find_a_team(input) # search for team in Team class
-            team
-        else
-            puts "Can't find that team. Try Again."
-            select_team(season)
-        end
     end
 
     def print_team_stats(team,season)
@@ -201,6 +201,13 @@ class NbaAdvancedStats::CLI
         end
     end
 
+    # PRINTING METHODS
+    
+    def welcome
+        puts "Welcome to NBA Advanced Stats CLI"
+        self.add_line_break
+    end
+
     def add_line_break
         puts "---------------------------------"
     end
@@ -209,4 +216,5 @@ class NbaAdvancedStats::CLI
         self.add_line_break
         puts "Thanks for using NBA Advanced Stats CLI!"
     end
+
 end
