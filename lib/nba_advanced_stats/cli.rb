@@ -34,7 +34,7 @@ class NbaAdvancedStats::CLI
 
     def main_menu(season)
         puts <<~DOC
-
+        
             (Type the # to select the option)
             1. Season Standings
             2. Home Court Records
