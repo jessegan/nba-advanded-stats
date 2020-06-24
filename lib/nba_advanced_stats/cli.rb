@@ -256,6 +256,7 @@ class NbaAdvancedStats::CLI
     def print_games(record)
         record.games.sort {|a,b| a.date<=>b.date}.each do |game|
             puts game.to_str
+            puts ""
         end
     end
 
