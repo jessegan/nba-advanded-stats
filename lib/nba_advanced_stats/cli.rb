@@ -10,9 +10,12 @@ class NbaAdvancedStats::CLI
     # USER INPUT METHODS
 
     def select_season
-        puts "Pick an NBA Season by typing in the starting year (ex. 2018 shows 2018-2019 season):"        
+        puts "Pick an NBA Season by typing in the starting year (1979-2018) or type 'exit' to quit.\n(ex. 2018 shows 2018-2019 season):"        
         input  = gets.strip
-        if (input.to_i.between?(1980,2018))
+
+        if exit?(input)
+            self.exit_program
+        elsif (input.to_i.between?(1980,2018))
             self.add_line_break
             self.load_season(input)
         else
@@ -33,7 +36,7 @@ class NbaAdvancedStats::CLI
             5. Get data about a specific team
             6. Get head-to-head matchup details
             7. Select a different season
-            Type exit to quit.
+            Type 'exit' to quit.
             What do you want to know about the #{season.year}-#{season.year.to_i+1} season?
         DOC
 
@@ -66,7 +69,7 @@ class NbaAdvancedStats::CLI
             self.add_line_break
             self.select_season
         when "exit"
-            self.exit
+            self.exit_program
         else
             puts "Invalid input. Try Again"
             self.main_menu(season)
@@ -74,14 +77,20 @@ class NbaAdvancedStats::CLI
     end
 
     def select_team(season)
-        puts "Type in the name of the team or the city they are based in:"
+        puts "Type in the name of the team or the city they are based in or type 'exit' to quit:"
         input = gets.strip.downcase
-        if team = season.find_a_team(input) # search for team in Team class
+        if exit?(input)
+            self.exit_program
+        elsif team = season.find_a_team(input) # search for team in Team class
             team
         else
             puts "Can't find that team. Try Again."
             select_team(season)
         end
+    end
+
+    def exit?(input)
+        input == "exit"
     end
 
     # API CALL
@@ -212,9 +221,10 @@ class NbaAdvancedStats::CLI
         puts "---------------------------------"
     end
 
-    def exit
+    def exit_program
         self.add_line_break
         puts "Thanks for using NBA Advanced Stats CLI!"
+        exit
     end
 
 end
