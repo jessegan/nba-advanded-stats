@@ -1,6 +1,6 @@
 class NbaAdvancedStats::Team
 
-    attr_accessor :name,:city, :games, :records
+    attr_accessor :name, :games, :records
 
     @@all = []
 
@@ -8,7 +8,16 @@ class NbaAdvancedStats::Team
         @name = name
         @games = []
         @records = []
-        self.save
+    end
+
+    def self.create(name:) 
+        team = self.new(name:name)
+        team.save
+        team
+    end
+
+    def save
+        @@all << self
     end
 
     # Class getters
@@ -27,7 +36,7 @@ class NbaAdvancedStats::Team
         if team = self.find_by_name(name)
             team
         else 
-            self.new(name:name)
+            self.create(name:name)
         end
     end
 
@@ -54,10 +63,6 @@ class NbaAdvancedStats::Team
 
     def get_games_by_season(season)
         self.records.find {|record| record.season == season}
-    end
-
-    def save
-        @@all << self
     end
 
 end

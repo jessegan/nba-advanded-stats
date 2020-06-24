@@ -12,12 +12,13 @@ class NbaAdvancedStats::Game
         @away_score=away_score
         @home_team=home_team
         @away_team=away_team
-        @season = season
+        @season=season
     end
 
     def self.create(date:,season:,home_team:,away_team:,home_score:,away_score:)
         game = self.new(date:date,season:season,home_team:home_team,away_team:away_team,home_score:home_score,away_score:away_score)
         game.save
+        game
     end
 
     def save
