@@ -1,7 +1,7 @@
 class NbaAdvancedStats::Game 
 
-    attr_accessor :date,:home_score,:away_score
-    attr_reader :season,:home_team,:away_team
+    attr_accessor :home_score,:away_score
+    attr_reader :date,:season,:home_team,:away_team
 
     @@all = []
 
@@ -10,10 +10,21 @@ class NbaAdvancedStats::Game
         @date=date
         @home_score=home_score
         @away_score=away_score
-        self.home_team=home_team
-        self.away_team=away_team
-        self.season = season
-        self.save
+        @home_team=home_team
+        @away_team=away_team
+        @season = season
+    end
+
+    def self.create(date:,season:,home_team:,away_team:,home_score:,away_score:)
+        game = self.new(date:date,season:season,home_team:home_team,away_team:away_team,home_score:home_score,away_score:away_score)
+        game.save
+    end
+
+    def save
+        self.home_team.add_game(self)
+        self.away_team.add_game(self)
+        self.season.add_game(self)
+        @@all << self
     end
 
     # Instance setters
@@ -54,9 +65,7 @@ class NbaAdvancedStats::Game
         self.home_score-self.away_score
     end
 
-    def save
-        @@all << self
-    end
+
 
     def to_str
         self.date + "\n" + "#{self.home_team.name} #{self.home_score} - #{self.away_score} #{self.away_team.name}"

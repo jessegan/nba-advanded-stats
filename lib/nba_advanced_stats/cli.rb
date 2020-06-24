@@ -39,30 +39,19 @@ class NbaAdvancedStats::CLI
         # Uses case statement to check input
         case input 
         when "1"
-            self.print_standings(season)
-            self.main_menu(season)
+            self.handle_standings(season)
         when "2"
-            self.print_home_court_records(season)
-            self.main_menu(season)
+            self.handle_home_court_records(season)
         when "3"
-            self.print_home_court_advantage(season)
-            self.main_menu(season)
+            self.handle_home_court_advantages(season)
         when "4"
-            self.print_point_differentials(season)
-            self.main_menu(season)
+            self.handle_point_differentials(season)
         when "5"
-            self.add_line_break
-            self.print_teams_list(season)
-            self.print_team_stats(self.select_team(season),season)
-            self.main_menu(season)
+            self.handle_team_stats(season)
         when "6"
-            self.add_line_break
-            self.print_teams_list(season)
-            self.select_head_to_head(season)
-            self.main_menu(season)
+            self.handle_head_to_head(season)
         when "7"
-            self.add_line_break
-            self.select_season
+            self.handle_new_season
         when "exit"
             self.exit_program
         else
@@ -115,19 +104,49 @@ class NbaAdvancedStats::CLI
         input == "exit"
     end
 
-    # API CALL
+    # HANDLE MAIN MENU INPUT
 
-    ## Uses the Season constructor to create a season given the year for the season by calling the API
-    def load_season(year)
-        puts "Loading the #{year}-#{year.to_i+1} season..."
-        season = NbaAdvancedStats::Season.find_or_create_with_api(year)
-        puts "Data Ready."
-        self.add_line_break
+    def handle_standings(season)
+        self.print_standings(season)
         self.main_menu(season)
     end
 
+    def handle_home_court_records(season)
+        self.print_home_court_records(season)
+        self.main_menu(season)
+    end
+
+    def handle_home_court_advantages(season)
+        self.print_home_court_advantage(season)
+        self.main_menu(season)
+    end
+
+    def handle_point_differentials(season)
+        self.print_point_differentials(season)
+        self.main_menu(season)
+    end
+
+    def handle_team_stats(season)
+        self.add_line_break
+        self.print_teams_list(season)
+        self.print_team_stats(self.select_team(season),season)
+        self.main_menu(season)
+    end
+
+    def handle_head_to_head(season)
+        self.add_line_break
+        self.print_teams_list(season)
+        self.select_head_to_head(season)
+        self.main_menu(season)
+    end
+
+    def handle_new_season
+        self.add_line_break
+        self.select_season
+    end
+
     # PRINTING MENUS
-    
+
     def print_main_menu(season)
         puts <<~DOC
 
@@ -182,10 +201,13 @@ class NbaAdvancedStats::CLI
         season.point_differentials_standings.each.with_index(1) do |record,i|
             puts "#{i.to_s.rjust(2)}. #{record[:team].name.ljust(30)}"+ "#{self.point_diff_to_str(record[:stat])}"
         end
+
+        self.add_line_break
     end
 
     def print_teams_list(season)
         season.teams.sort {|a,b| a.name<=>b.name}.each {|team| puts team.name}
+
         self.add_line_break
     end
 
@@ -235,6 +257,17 @@ class NbaAdvancedStats::CLI
         record.games.sort {|a,b| a.date<=>b.date}.each do |game|
             puts game.to_str
         end
+    end
+
+    # API CALL
+
+    ## Uses the Season constructor to create a season given the year for the season by calling the API
+    def load_season(year)
+        puts "Loading the #{year}-#{year.to_i+1} season..."
+        season = NbaAdvancedStats::Season.find_or_create_with_api(year)
+        puts "Data Ready."
+        self.add_line_break
+        self.main_menu(season)
     end
 
     # PRINTING HELPER METHODS
