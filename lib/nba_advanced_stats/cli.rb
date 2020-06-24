@@ -2,6 +2,7 @@ class NbaAdvancedStats::CLI
 
     # START CLI
 
+    ## Initiates the start of the CLI
     def run
         self.welcome
         self.select_season
@@ -9,27 +10,33 @@ class NbaAdvancedStats::CLI
 
     # USER INPUT METHODS
 
+    ## Prompts user to enter a season and handles the input
     def select_season
         puts "Pick an NBA Season by typing in the starting year (1979-2018) or type 'exit' to quit.\n(ex. 2018 shows 2018-2019 season):"        
         input  = gets.strip
 
+        # Checks if user entered exit
         if exit?(input)
             self.exit_program
+        #Checks if input is a valid year; if valid, loads the season
         elsif (input.to_i.between?(1980,2018))
             self.add_line_break
             self.load_season(input)
+        # if not valid, prompts user to enter a season again
         else
             puts "Invalid year. Try again."
             puts ""
-            select_season
+            self.select_season
         end
     end
 
+    ## Prompts user to choose an option from the main menu and then handles input
     def main_menu(season)
         self.print_main_menu(season)
 
         input = gets.strip.downcase
 
+        # Uses case statement to check input
         case input 
         when "1"
             self.print_standings(season)
@@ -64,40 +71,54 @@ class NbaAdvancedStats::CLI
         end
     end
 
+    ## Prompts user to select a team and handles input
     def select_team(season)
         puts "Type in the name of the team or the city they are based in or type 'exit' to quit:"
         input = gets.strip.downcase
+
+        # Checks if input is exit
         if exit?(input)
             self.exit_program
+        # Check if input matches a team; if matches, return the team
         elsif team = season.find_a_team(input) # search for team in Team class
             team
+        # if no matches, prompt user to try again.
         else
             puts "Can't find that team. Try Again."
             select_team(season)
         end
     end
 
+    ## Prompts user to select the 2 teams needed for head-to-head data and hands off teams to print
     def select_head_to_head(season)
+        # selecting first team
         puts "Select the first team:"
         team1 = self.select_team(season)
         self.add_line_break
+
+        # selecting second team
         puts "Select the second team:"
-        # check if teams are the same
         team2 = self.select_team(season)
+
+        # Checks if teams are the same, and keeps asking for another team until they are not
         while team1 == team2
             puts "You picked the same team. Try again."
             team2=self.select_team(season)
         end
+
+        # sends 2 teams off to another method
         self.print_head_to_head(team1,team2,season)
     end
 
+    ## checks if user enters exit
     def exit?(input)
         input == "exit"
     end
 
     # API CALL
-    def load_season(year)
 
+    ## Uses the Season constructor to create a season given the year for the season by calling the API
+    def load_season(year)
         puts "Loading the #{year}-#{year.to_i+1} season..."
         season = NbaAdvancedStats::Season.find_or_create_with_api(year)
         puts "Data Ready."
@@ -106,6 +127,7 @@ class NbaAdvancedStats::CLI
     end
 
     # PRINTING MENUS
+    
     def print_main_menu(season)
         puts <<~DOC
 
