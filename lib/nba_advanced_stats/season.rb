@@ -54,7 +54,7 @@ class NbaAdvancedStats::Season
         if record = self.find_record_by_team(team)
             record
         else
-            NbaAdvancedStats::Record.create_new_record(season:self,team:team)
+            NbaAdvancedStats::Record.create(season:self,team:team)
         end
     end
 

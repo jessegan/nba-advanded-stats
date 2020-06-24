@@ -14,23 +14,16 @@ class NbaAdvancedStats::Record
         @games=[]
     end
 
-    def self.create_new_record(season:,team:,wins:0,losses:0)
-        record = NbaAdvancedStats::Record.new(wins:wins,losses:losses)
-        record.season = season
-        record.team = team
+    def self.create(season:,team:,wins:0,losses:0)
+        record = NbaAdvancedStats::Record.new(season:season,team:team,wins:wins,losses:losses)
         record.save
         record
     end
 
-    # instance setters
-    def season=(season)
-        @season = season
-        season.add_record(self)
-    end
-
-    def team=(team)
-        @team = team
-        team.add_record(self)
+    def save
+        self.season.add_record(self)
+        self.team.add_record(self)
+        @@all << self
     end
     
     # class getter
@@ -105,10 +98,7 @@ class NbaAdvancedStats::Record
         1.0 * total_dif / (self.wins + self.losses)
     end
 
-    def save
-        @@all << self
-    end
-    
+
     def to_str
         "#{self.wins.to_s.rjust(2)} - #{self.losses.to_s.ljust(2)}"
     end
