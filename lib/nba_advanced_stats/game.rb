@@ -27,28 +27,14 @@ class NbaAdvancedStats::Game
         @@all << self
     end
 
-    # Instance setters
-    def home_team=(team)
-        @home_team = team
-        team.add_game(self)
-    end
-
-    def away_team=(team)
-        @away_team=team
-        team.add_game(self)
-    end
-
-    def season=(season)
-        @season = season
-        season.add_game(self)
-    end
-
     # Class getter
     def self.all
         @@all
     end
 
-    # instance methods
+    # INSTANCE METHODS
+
+    ## Returns a hash of winning and losing teams
     def results_hash
         if self.home_score > self.away_score
             {winner: self.home_team,loser: self.away_team}
@@ -57,16 +43,17 @@ class NbaAdvancedStats::Game
         end
     end
 
+    ## Returns the winning team
     def winner
         self.results_hash[:winner]
     end
 
+    ## Returns the point differential of the game (home - away)
     def point_differential
         self.home_score-self.away_score
     end
 
-
-
+    ## Returns a string formatted version
     def to_str
         self.date + "\n" + "#{self.home_team.name} #{self.home_score} - #{self.away_score} #{self.away_team.name}"
     end
