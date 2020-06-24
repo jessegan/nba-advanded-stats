@@ -26,19 +26,7 @@ class NbaAdvancedStats::CLI
     end
 
     def main_menu(season)
-        puts <<~DOC
-
-            (Type the # to select the option)
-            1. Season Standings
-            2. Home Court Records
-            3. Home Court Advantage (Difference in win percentages between home games and all games)
-            4. Average Point Differential
-            5. Get data about a specific team
-            6. Get head-to-head matchup details
-            7. Select a different season
-            Type 'exit' to quit.
-            What do you want to know about the #{season.year}-#{season.year.to_i+1} season?
-        DOC
+        self.print_main_menu(season)
 
         input = gets.strip.downcase
 
@@ -117,6 +105,23 @@ class NbaAdvancedStats::CLI
         self.main_menu(season)
     end
 
+    # PRINTING MENUS
+    def print_main_menu(season)
+        puts <<~DOC
+
+        (Type the # to select the option)
+        1. Season Standings
+        2. Home Court Records
+        3. Home Court Advantage (Difference in win percentages between home games and all games)
+        4. Average Point Differential
+        5. Get data about a specific team
+        6. Get head-to-head matchup details
+        7. Select a different season
+        Type 'exit' to quit.
+        What do you want to know about the #{season.year}-#{season.year.to_i+1} season?
+    DOC
+    end
+
     # PRINTING STATISTICS
 
     def print_standings(season)
@@ -143,7 +148,7 @@ class NbaAdvancedStats::CLI
         self.add_line_break
         puts "Home Court Advantages for the #{season.year}-#{season.year.to_i+1} season"
         season.home_court_advantages_standings.each.with_index(1) do |record,i|
-            puts "#{i.to_s.rjust(2)}. #{record[:team].name.ljust(30)}"+ "#{record[:stat] > 0 ? "+" : ""}" +"#{"%0.2f" % [record[:stat]*100]}%"
+            puts "#{i.to_s.rjust(2)}. #{record[:team].name.ljust(30)}"+ "#{self.percentage_to_str(record[:stat])}"
         end
 
         self.add_line_break
@@ -153,7 +158,7 @@ class NbaAdvancedStats::CLI
         self.add_line_break
         puts "Average Point Differentials for the #{season.year}-#{season.year.to_i+1} season"
         season.point_differentials_standings.each.with_index(1) do |record,i|
-            puts "#{i.to_s.rjust(2)}. #{record[:team].name.ljust(30)}"+ "#{record[:stat] > 0 ? "+" : ""}" +"#{"%0.2f" % [record[:stat]]}"
+            puts "#{i.to_s.rjust(2)}. #{record[:team].name.ljust(30)}"+ "#{self.point_diff_to_str(record[:stat])}"
         end
     end
 
@@ -173,10 +178,10 @@ class NbaAdvancedStats::CLI
         # Home Court
         home_court = record.home_court_record
         home_court_advantage = record.home_court_advantage
-        puts "#{"Home Court:".rjust(20)} #{home_court.to_str} with a #{home_court_advantage > 0 ? "+" : ""}" +"#{"%0.2f" % [home_court_advantage*100]}% advantage"
+        puts "#{"Home Court:".rjust(20)} #{home_court.to_str} with a #{self.percentage_to_str(home_court_advantage)} advantage"
         # Point Differential
         point_dif = record.average_point_differential
-        puts "#{"Point Differential:".rjust(20)} #{point_dif > 0 ? "+" : ""}#{"%0.2f" % [point_dif]}"
+        puts "#{"Point Differential:".rjust(20)} #{self.point_diff_to_str(point_dif)}"
         self.add_line_break
     end
 
@@ -195,7 +200,7 @@ class NbaAdvancedStats::CLI
             puts "No games played against each other this season."
         else
             puts "Record: #{record.to_str}"
-            puts "Point Differential: #{point_dif > 0 ? "+" : ""}#{"%0.2f" % [point_dif]}"
+            puts "Point Differential: #{self.point_diff_to_str(point_dif)}"
             puts ""
             puts "Games Played:"
             self.print_games(record)
@@ -210,11 +215,19 @@ class NbaAdvancedStats::CLI
         end
     end
 
-    # PRINTING METHODS
+    # PRINTING HELPER METHODS
     
     def welcome
         puts "Welcome to NBA Advanced Stats CLI"
         self.add_line_break
+    end
+
+    def point_diff_to_str(point_dif)
+        "#{point_dif > 0 ? "+" : ""}#{"%0.2f" % [point_dif]}"
+    end
+
+    def percentage_to_str(percentage)
+        "#{percentage > 0 ? "+" : ""}" +"#{"%0.2f" % [percentage*100]}%"
     end
 
     def add_line_break
