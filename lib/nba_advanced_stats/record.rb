@@ -5,7 +5,8 @@ class NbaAdvancedStats::Record
 
     @@all = []
 
-    #constructors
+    # CONSTRUCTORS
+
     def initialize(season:nil,team:nil,wins:0,losses:0)
         @season=season
         @team=team
@@ -26,12 +27,30 @@ class NbaAdvancedStats::Record
         @@all << self
     end
     
-    # class getter
+    # CLASS METHODS
+
+    ## class getter
     def self.all
         @@all
     end
 
-    # instance methods
+    ## Find methods
+
+    def self.find_record_by_team_season(team,season)
+        self.all.find {|record| record.season==season && record.team == team}
+    end
+
+    def self.find_or_create_record_by_team_season(team,season)
+        if record = self.find_record_by_team_season(team,season)
+            record
+        else
+            self.create(season:season,team:team)
+        end
+    end
+
+    # INSTANCE METHODS
+
+
     def add_win(game)
         self.wins += 1
         self.games << game

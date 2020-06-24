@@ -5,7 +5,8 @@ class NbaAdvancedStats::Game
 
     @@all = []
 
-    # Constructors
+    # CONSTRUCTORS
+    
     def initialize(date:,season:,home_team:,away_team:,home_score:,away_score:)
         @date=date
         @home_score=home_score
