@@ -89,6 +89,20 @@ class NbaAdvancedStats::CLI
         end
     end
 
+    def select_head_to_head(season)
+        puts "Select the first team:"
+        team1 = self.select_team(season)
+        self.add_line_break
+        puts "Select the second team:"
+        # check if teams are the same
+        team2 = self.select_team(season)
+        while team1 == team2
+            puts "You picked the same team. Try again."
+            team2=self.select_team(season)
+        end
+        self.print_head_to_head(team1,team2,season)
+    end
+
     def exit?(input)
         input == "exit"
     end
@@ -109,7 +123,7 @@ class NbaAdvancedStats::CLI
         self.add_line_break
         puts "Team Standings for the #{season.year}-#{season.year.to_i+1} season"
         season.standings.each.with_index(1) do |record,i|
-            puts "#{i.to_s.rjust(2)}. #{record.team.name.ljust(30)}#{record.wins.to_s.rjust(2)} - #{record.losses.to_s.ljust(2)}"
+            puts "#{i.to_s.rjust(2)}. #{record.team.name.ljust(30)}#{record.to_str}"
         end
 
         self.add_line_break
@@ -119,7 +133,7 @@ class NbaAdvancedStats::CLI
         self.add_line_break
         puts "Home Court Records for the #{season.year}-#{season.year.to_i+1} season"
         season.home_court_records_standings.each.with_index(1) do |record,i|
-            puts "#{i.to_s.rjust(2)}. #{record.team.name.ljust(30)}#{record.wins.to_s.rjust(2)} - #{record.losses.to_s.ljust(2)}"
+            puts "#{i.to_s.rjust(2)}. #{record.team.name.ljust(30)}#{record.to_str}"
         end
 
         self.add_line_break
@@ -155,29 +169,15 @@ class NbaAdvancedStats::CLI
         puts "#{"Standing:".rjust(20)} ##{season.get_standing(team)}"
         # Record
         record = team.get_record_by_season(season)
-        puts "#{"Record:".rjust(20)} #{record.wins.to_s.rjust(2)} - #{record.losses.to_s.ljust(2)}"
+        puts "#{"Record:".rjust(20)} #{record.to_str}"
         # Home Court
         home_court = record.home_court_record
         home_court_advantage = record.home_court_advantage
-        puts "#{"Home Court:".rjust(20)} #{home_court.wins.to_s.rjust(2)} - #{home_court.losses.to_s.ljust(2)} with a #{home_court_advantage > 0 ? "+" : ""}" +"#{"%0.2f" % [home_court_advantage*100]}% advantage"
+        puts "#{"Home Court:".rjust(20)} #{home_court.to_str} with a #{home_court_advantage > 0 ? "+" : ""}" +"#{"%0.2f" % [home_court_advantage*100]}% advantage"
         # Point Differential
         point_dif = record.average_point_differential
         puts "#{"Point Differential:".rjust(20)} #{point_dif > 0 ? "+" : ""}#{"%0.2f" % [point_dif]}"
         self.add_line_break
-    end
-
-    def select_head_to_head(season)
-        puts "Select the first team:"
-        team1 = self.select_team(season)
-        self.add_line_break
-        puts "Select the second team:"
-        # check if teams are the same
-        team2 = self.select_team(season)
-        while team1 == team2
-            puts "You picked the same team. Try again."
-            team2=self.select_team(season)
-        end
-        self.print_head_to_head(team1,team2,season)
     end
 
     def print_head_to_head(team1,team2,season)
@@ -194,7 +194,7 @@ class NbaAdvancedStats::CLI
         if record.games.length == 0
             puts "No games played against each other this season."
         else
-            puts "Record: #{record.wins.to_s.rjust(2)} - #{record.losses.to_s.ljust(2)}"
+            puts "Record: #{record.to_str}"
             puts "Point Differential: #{point_dif > 0 ? "+" : ""}#{"%0.2f" % [point_dif]}"
             puts ""
             puts "Games Played:"
@@ -206,7 +206,7 @@ class NbaAdvancedStats::CLI
 
     def print_games(record)
         record.games.sort {|a,b| a.date<=>b.date}.each do |game|
-            puts ""+game
+            puts game.to_str
         end
     end
 

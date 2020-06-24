@@ -108,5 +108,9 @@ class NbaAdvancedStats::Record
     def save
         @@all << self
     end
+    
+    def to_str
+        "#{self.wins.to_s.rjust(2)} - #{self.losses.to_s.ljust(2)}"
+    end
 
 end
