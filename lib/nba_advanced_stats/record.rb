@@ -50,6 +50,7 @@ class NbaAdvancedStats::Record
 
     # INSTANCE METHODS
 
+    ## Update wins and losses
 
     def add_win(game)
         self.wins += 1
@@ -60,6 +61,8 @@ class NbaAdvancedStats::Record
         self.losses += 1
         self.games << game
     end
+
+    ## Statistics
 
     def win_percentage
         1.0 * self.wins/(self.wins + self.losses)
@@ -117,7 +120,8 @@ class NbaAdvancedStats::Record
         1.0 * total_dif / (self.wins + self.losses)
     end
 
-
+    ## To string
+    
     def to_str
         "#{self.wins.to_s.rjust(2)} - #{self.losses.to_s.ljust(2)}"
     end
