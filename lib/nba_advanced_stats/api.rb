@@ -11,7 +11,7 @@ class NbaAdvancedStats::API
         count = (season_data["meta"]["current_page"] - 1) * 100
 
         # Create the new Season object
-        season = NbaAdvancedStats::Season.new(year: year) if !season
+        season = NbaAdvancedStats::Season.create(year: year) if !season
 
         # Iterate through every game
         season_data["data"].each.with_index(count+1) do |game_data,i|

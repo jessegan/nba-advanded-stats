@@ -44,20 +44,34 @@ class NbaAdvancedStats::Season
         end
     end
 
-    # Instance Methods
+    # INSTANCE METHODS
+
+    ## Adding object relationships
+
+    # Adding a game to the season and updating the coresponding team records
     def add_game(game)
         self.games << game
         self.record_game(game)
     end
 
+    # Update team records with game results
     def record_game(game)
         results = game.results_hash
         self.find_or_create_record_by_team(results[:winner]).add_win(game)
         self.find_or_create_record_by_team(results[:loser]).add_loss(game)
     end
 
+    # Add a record to a season
     def add_record(record)
         self.records << record
+    end
+
+    ## Find methods
+
+    def find_a_team(name)
+        self.teams.find do |team|
+            team.name.downcase.match(/\b#{name.downcase}\b/)
+        end
     end
 
     def find_record_by_team(team)
@@ -71,6 +85,13 @@ class NbaAdvancedStats::Season
             NbaAdvancedStats::Record.create(season:self,team:team)
         end
     end
+
+    ## Instance getter
+    def teams
+        self.records.map {|record| record.team}
+    end
+
+    ## Instance stats methods
 
     def standings
         self.records.sort do |a,b| 
@@ -117,16 +138,6 @@ class NbaAdvancedStats::Season
 
     def get_head_to_head_record(team1,team2)
         self.find_record_by_team(team1).head_to_head(team2)
-    end
-
-    def teams
-        self.records.map {|record| record.team}
-    end
-
-    def find_a_team(name)
-        self.teams.find do |team|
-            team.name.downcase.match(/\b#{name.downcase}\b/)
-        end
     end
 
 end
