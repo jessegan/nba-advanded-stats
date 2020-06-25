@@ -11,21 +11,13 @@ Example Statistics:
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Clone or download the files from https://github.com/jessegan/nba-advanded-stats.
 
-```ruby
-gem 'nba_advanced_stats'
-```
-
-And then execute:
-
-    $ bundle install
-
-Or install it yourself as:
-
-    $ gem install nba_advanced_stats
+From the base directory of the program, run 'bundle install' in the terminal to install the required gems.
 
 ## Usage
+
+From the base directory of the program, calling 'bin/nba-advanced-stats' in the terminal will run the CLI.
 
 First, select any NBA season by year and then the app will load all the games from that season.
 Next, choose from a list of option about that season.
