@@ -97,7 +97,7 @@ class NbaAdvancedStats::Season
         self.records.sort do |a,b| 
             if a.wins == b.wins
                 hth = a.head_to_head(b.team)
-                hth.wins <=> hth.losses
+                hth.losses <=> hth.wins
             else
                 b.wins <=> a.wins
             end
