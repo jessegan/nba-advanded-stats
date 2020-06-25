@@ -4,20 +4,34 @@ class NbaAdvancedStats::Season
 
     @@all = []
 
-    # Hooks
+    # CONSTRUCTORS
+
     def initialize(year:)
         @year = year
         @games=[]
         @records=[]
         self.save
     end
+
+    def self.create(year:)
+        season = self.new(year:year)
+        season.save
+        season
+    end
     
-    # Class Getter
+    def save
+        @@all << self
+    end
+
+    # CLASS METHODS
+
+    ## Class Getter
+
     def self.all
         @@all
     end
 
-    # Class methods
+    ## Find methods
     def self.find_with_year(year)
         self.all.find{|season| season.year == year}
     end
@@ -114,10 +128,5 @@ class NbaAdvancedStats::Season
             team.name.downcase.match(/\b#{name.downcase}\b/)
         end
     end
-
-    def save
-        @@all << self
-    end
-
 
 end
